@@ -1,0 +1,78 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install -r src/server/requirements.txt
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Node.js dependencies
+      run: |
+        cd src/app
+        npm install
+
+    - name: Run backend tests
+      run: |
+        source .venv/bin/activate
+        pytest src/server/tests
+
+    - name: Build frontend
+      run: |
+        cd src/app
+        npm run build
+
+    - name: Start backend server
+      run: |
+        source .venv/bin/activate
+        nohup uvicorn src/server/main:app --host 0.0.0.0 --port 8000 &
+
+    - name: Start frontend server
+      run: |
+        cd src/app
+        nohup npm run dev &
+
+    - name: Run end-to-end tests
+      run: |
+        cd src/app
+        npm run test:e2e

@@ -1,99 +1,97 @@
 
----
+# YouTube Downloader API
 
-# YouTubeDL - Powerful YouTube Downloader 🚀
+This project is a YouTube Downloader API built with FastAPI for the backend and React for the frontend. It allows users to download YouTube videos in various formats.
 
-![YouTubeDL](https://img.shields.io/badge/yt--dlp-v1.0-blue?style=for-the-badge)
+## Features
 
-Welcome to **YouTubeDL**! A sleek, user-friendly, and efficient tool to download YouTube videos in the best available quality. Powered by **yt-dlp**, this downloader ensures fast downloads, supports video formats, and can bypass most common restrictions.
+- Download YouTube videos in different formats (audio/video).
+- Serve downloaded files via HTTP.
+- React frontend for user interaction.
+- CORS enabled for frontend-backend communication.
 
-## Features ✨
-- **High-Quality Downloads**: Download videos in the best resolution available.
-- **Multiple Formats**: Supports MP4, WEBM, and more.
-- **Fast & Reliable**: Powered by `yt-dlp`, a powerful YouTube downloader.
-- **Simple & Easy**: Just paste the URL and you're good to go!
-- **Cross-Platform**: Works on Windows, macOS, and Linux.
+## Technologies Used
 
-## Installation 📦
+- **Backend**: FastAPI, Python, yt-dlp
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Database**: PostgreSQL (for future enhancements)
+- **CI/CD**: GitHub Actions
 
-### Install Dependencies
-Make sure you have Python installed, and then run the following command to install the necessary libraries:
+## Prerequisites
 
-```bash
-pip install yt-dlp
-```
+- Python 3.11
+- Node.js 18
+- npm
+- PostgreSQL (for future enhancements)
 
-This will install the required **yt-dlp** library, which is at the core of the downloader.
+## Installation
 
-## Usage 💡
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/RohanCyberOps/YoutubeDL.git
+    cd YoutubeDL
+    ```
 
-### Simple Video Download
-1. **Run the Python script**:
-   ```bash
-   python youtube_downloader.py
-   ```
-2. **Enter the YouTube Video URL** when prompted:
-   ```bash
-   Enter the YouTube video URL: https://youtu.be/your-video-url
-   ```
+2. **Set up the backend**:
+    ```sh
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
+    pip install -r src/server/requirements.txt
+    ```
 
-The script will automatically download the video in the highest available quality and save it to your current working directory.
+3. **Set up the frontend**:
+    ```sh
+    cd src/app
+    npm install
+    ```
 
-### Download Specific Format or Quality 🎞️
-You can modify the `yt_dlp` options in the script to specify video formats and quality (HD, SD, etc.) to suit your needs.
+## Running the Application
 
-## Example Code 📝
+1. **Start the backend server**:
+    ```sh
+    source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
+    uvicorn src/server/main:app --host 127.0.0.1 --port 8000
+    ```
 
-```python
-import yt_dlp
+2. **Start the frontend server**:
+    ```sh
+    cd src/app
+    npm run dev
+    ```
 
-url = input("Enter the YouTube video URL: ")
+## API Endpoints
 
-ydl_opts = {
-    'format': 'best',  # Download the best quality available
+- `GET /`: Welcome message.
+- `POST /download`: Download a YouTube video.
+- `GET /download/{file_id}`: Serve the downloaded file.
+
+## Example Request
+
+To download a video, send a POST request to `/download` with the following JSON body:
+```json
+{
+  "url": "https://youtu.be/your_video_id",
+  "format": "video"
 }
-
-try:
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
-    print("Download complete!")
-except Exception as e:
-    print(f"An error occurred: {e}")
 ```
 
-### Options
-- **best**: Download the best available quality.
-- **worst**: Download the lowest quality.
-- **mp4**: Download in MP4 format.
+## CI/CD Pipeline
 
-## Troubleshooting 🛠️
+The project uses GitHub Actions for continuous integration and deployment. The workflow is defined in `.github/workflows/main.yml`.
 
-If you encounter a **403 Forbidden error**, it might be due to age or region restrictions. You can:
-- Use a **VPN** to bypass region-based restrictions.
-- Ensure the video is **public** and not age-restricted.
+## Contributing
 
-If `yt-dlp` doesn't work with certain videos, it's always worth checking for updates:
-```bash
-pip install --upgrade yt-dlp
-```
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
-## Contributing 🤝
+## License
 
-Feel free to contribute! Open an issue or submit a pull request if you'd like to improve the project. 
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-### Ideas for Contribution:
-- Add GUI (Graphical User Interface) support for better usability.
-- Enhance the code with more download options like playlists, captions, etc.
-- Improve error handling and logging.
+## Contact
 
-## License 📜
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-### Let’s Get Downloading! 🎬
-
-With **YouTubeDL**, downloading your favorite YouTube videos is quick and easy. 🚀
-
---- 
+For any inquiries, please contact [RohanCyberOps](https://github.com/RohanCyberOps).
