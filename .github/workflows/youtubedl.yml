@@ -23,9 +23,9 @@ jobs:
           POSTGRES_DB: test_db
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-interval 20s  # Increased interval
+          --health-timeout 10s   # Increased timeout
+          --health-retries 10    # Increased retries
 
     steps:
     - name: Checkout code
@@ -76,3 +76,7 @@ jobs:
       run: |
         cd src/app
         npm run test:e2e
+
+    - name: Log PostgreSQL status  # Added step to log PostgreSQL status
+      run: |
+        docker exec -it $(docker ps -q --filter ancestor=postgres:latest) pg_isready
